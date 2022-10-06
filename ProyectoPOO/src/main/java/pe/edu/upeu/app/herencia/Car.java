@@ -8,6 +8,6 @@ package pe.edu.upeu.app.herencia;
  *
  * @author LABORATORIO_2
  */
-public class Car {
+public class Car extends Vehicle{
     
 }

@@ -8,11 +8,12 @@ package pe.edu.upeu.app.herencia;
  *
  * @author LABORATORIO_2
  */
-public class Vehicle {
-    public String marca="Toyota";    
-
-    public void sonido(){
-        System.out.println("Tuut..tuut...");
+public class ClasePrincipal {
+    public static void main(String[] args) {
+        Car c=new Car();
+        c.marca="Ford";
+        System.out.println(c.marca);
+        c.sonido();
+        
     }
- 
 }
