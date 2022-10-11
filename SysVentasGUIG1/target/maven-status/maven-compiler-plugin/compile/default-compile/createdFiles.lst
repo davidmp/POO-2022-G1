@@ -1,4 +1,6 @@
+pe\edu\upeu\app\gui\Login.class
+pe\edu\upeu\app\util\MsgBox.class
 pe\edu\upeu\app\util\UtilsX.class
 pe\edu\upeu\app\SysVentasGUIG1.class
+.netbeans_automatic_build
 pe\edu\upeu\app\util\ErrorLogger.class
-pe\edu\upeu\app\util\MsgBox.class
