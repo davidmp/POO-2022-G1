@@ -88,7 +88,12 @@ public class GUIMain extends JFrame {
             if (e.getSource() == jmI2) {
                 
                 MainCliente mc = new MainCliente();
-                jtpane.add("Cliente", mc);
+                //jtpane.add("Cliente", mc);
+                scrollPane = new JScrollPane(mc);
+                scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                jtpane.add("Adm. Cliente",scrollPane);
+                                
                 contai.add(BorderLayout.CENTER, jtpane);
                 contai.invalidate();
                 contai.validate();
