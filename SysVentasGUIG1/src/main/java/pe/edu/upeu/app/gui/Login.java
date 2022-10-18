@@ -35,7 +35,7 @@ public class Login extends javax.swing.JFrame {
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.setResizable(false);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize(new Dimension(screenSize.width / 4, (screenSize.height - 36) / 4));
+        this.setSize(new Dimension(screenSize.width / 2, (screenSize.height - 36) / 2));
         this.setLocationRelativeTo(null);
 
         ImageIcon imagex = new ImageIcon(obj.getFile("secrecy-icon.png"));
@@ -154,7 +154,7 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (txtUsuario.getText().equals("davidmp") && txtClave.getText().equals("123456")) {
+        if (txtUsuario.getText().equals("davidmp") && String.valueOf(txtClave.getPassword()).equals("123456")) {
             System.out.println("Entro Aqui!!");
             GUIMain guiMain = new GUIMain();
             guiMain.setVisible(true);

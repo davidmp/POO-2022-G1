@@ -23,6 +23,7 @@ public class GUIMain extends JFrame {
     JMenuBar menuBar;
     JMenu menu1;
     JMenuItem jmI1;
+    JMenuItem jmI2;
     JTabbedPane jtpane;
     JPanel jp;
     JScrollPane scrollPane;
@@ -34,13 +35,18 @@ public class GUIMain extends JFrame {
         menuBar = new JMenuBar();
         menu1 = new JMenu("Archivo");
         jmI1 = new JMenuItem("Abrir");
+        jmI2 = new JMenuItem("Adm. Cliente");
         menuBar.add(menu1);
         menu1.add(jmI1);
+        menu1.add(jmI2);
         menu1 = new JMenu("Ver");
         menuBar.add(menu1);
         this.add(menuBar);
+        jtpane = new JTabbedPane();
         MenuItemListener menuItemListener = new MenuItemListener();
         jmI1.addActionListener(menuItemListener);
+        jmI2.addActionListener(menuItemListener);
+        
         this.getContentPane().add(BorderLayout.NORTH, menuBar);
         //this.getContentPane().add(BorderLayout.CENTER, jtpane);
         this.setVisible(true);
@@ -53,8 +59,9 @@ public class GUIMain extends JFrame {
         public void actionPerformed(ActionEvent e) {
             System.out.println("pasa por aqui");
             Container contai = GUIMain.this.getContentPane();
+              jtpane.removeAll();
             if (e.getSource() == jmI1) {
-                jtpane = new JTabbedPane();
+              
                 jp = new JPanel();
                 jtpane.add("Prueba", jp);
                 jp = new JPanel();
@@ -73,6 +80,15 @@ public class GUIMain extends JFrame {
                 jtpane.add("visit", pp1);
                 jtpane.add("ver", pp2);
                 jtpane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+                contai.add(BorderLayout.CENTER, jtpane);
+                contai.invalidate();
+                contai.validate();
+                contai.repaint();
+            }
+            if (e.getSource() == jmI2) {
+                
+                MainCliente mc = new MainCliente();
+                jtpane.add("Cliente", mc);
                 contai.add(BorderLayout.CENTER, jtpane);
                 contai.invalidate();
                 contai.validate();
