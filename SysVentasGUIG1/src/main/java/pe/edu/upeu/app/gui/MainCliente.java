@@ -4,17 +4,79 @@
  */
 package pe.edu.upeu.app.gui;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import pe.edu.upeu.app.dao.ClienteDAO;
+import pe.edu.upeu.app.dao.ClienteDaoI;
+import pe.edu.upeu.app.modelo.ClienteTO;
+
 /**
  *
  * @author LABORATORIO_2
  */
+enum TIPOCLXIENTE {
+    Natural, General, Juridico
+};
+
 public class MainCliente extends javax.swing.JPanel {
 
     /**
      * Creates new form MainCliente
      */
+    ClienteDaoI cDao;
+    DefaultTableModel modelo;
+
     public MainCliente() {
         initComponents();
+        ListarClientes();
+        for (TIPOCLXIENTE myVar : TIPOCLXIENTE.values()) {
+            cbxTipo.addItem(myVar.toString());
+        }
+    }
+
+    public void ListarClientes() {
+        cDao = new ClienteDAO();
+        List<ClienteTO> listarCleintes = cDao.listarClientes();
+        jTable1.setAutoCreateRowSorter(true);
+        modelo = (DefaultTableModel) jTable1.getModel();
+        Object[] ob = new Object[4];
+        for (int i = 0; i < listarCleintes.size(); i++) {
+            ob[0] = i + 1;
+            ob[1] = listarCleintes.get(i).getDniruc();
+            ob[2] = listarCleintes.get(i).getNombresrs();
+            ob[3] = listarCleintes.get(i).getTipo();
+            modelo.addRow(ob);
+        }
+        jTable1.setModel(modelo);
+    }
+
+    private void paintForm() {
+        if (jTable1.getSelectedRow() != -1) {
+            modelo = (DefaultTableModel) jTable1.getModel();
+            int rowx = jTable1.getSelectedRow();
+            Object valor = jTable1.getValueAt(rowx, 1);
+            //ClienteTO filax = (ClienteTO) 
+
+            cDao = new ClienteDAO();
+            ClienteTO d
+                    = cDao.buscarClientes(valor.toString());
+            txtDni.setText(d.getDniruc());
+            txtNombre.setText(d.getNombresrs());
+            cbxTipo.setSelectedItem(d.getTipo());
+            txtDni.setEditable(false);
+            btnRegistrar.setText("MODIFICAR");
+            //guardarButton.setToolTipText("MODIFICAR");
+        } else {
+            txtDni.setEditable(true);
+        }
+    }
+
+    public void resetForm() {
+        txtDni.setText("");
+        txtNombre.setText("");
+        cbxTipo.setSelectedIndex(0);
+        txtDni.requestFocus();
     }
 
     /**
@@ -82,10 +144,25 @@ public class MainCliente extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(204, 255, 255));
 
         btnNuevo.setText("NUEVO");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         btnRegistrar.setText("REGISTRAR");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("DNI/RUC:");
 
@@ -93,7 +170,7 @@ public class MainCliente extends javax.swing.JPanel {
 
         jLabel5.setText("Tipo:");
 
-        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -157,6 +234,11 @@ public class MainCliente extends javax.swing.JPanel {
                 "#", "DNI/RUC", "Nombres", "Tipo"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -218,6 +300,79 @@ public class MainCliente extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        paintForm();
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+        resetForm();
+        btnRegistrar.setText("REGISTRAR");
+        txtDni.setEditable(true);
+        jTable1.getSelectionModel().clearSelection();
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        cDao = new ClienteDAO();
+        if (jTable1.getSelectedRowCount() > 0) {
+            try {
+                modelo = (DefaultTableModel) jTable1.getModel();
+                int rowx = jTable1.getSelectedRow();
+                Object valor = jTable1.getValueAt(rowx, 1);
+                JOptionPane.showMessageDialog(this, valor);
+                modelo.removeRow(rowx);
+                cDao.delete(valor.toString());
+                resetForm();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un item");
+        }
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // TODO add your handling code here:
+        cDao = new ClienteDAO();
+        ClienteTO to = new ClienteTO();
+        to.setDniruc(txtDni.getText());
+        to.setNombresrs(txtNombre.getText());
+        to.setTipo(cbxTipo.getSelectedItem().toString());
+        int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            try {
+                int resultado = cDao.update(to);
+                if (resultado != 0) {
+                    modelo = (DefaultTableModel) jTable1.getModel();
+                    Object nuevo[] = {fila + 1, to.getDniruc(), to.getNombresrs(), to.getTipo()};
+                    modelo.removeRow(fila);
+                    modelo.insertRow(fila, nuevo);
+                    resetForm();
+                    JOptionPane.showMessageDialog(this, "Re registro");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        } else {
+            try {
+                if (cDao.create(to) != 0) {
+                    modelo = (DefaultTableModel) jTable1.getModel();
+                    Object nuevo[] = {modelo.getRowCount() + 1, to.getDniruc(), to.getNombresrs(), to.getTipo()};
+                    modelo.addRow(nuevo);
+                    resetForm();
+                    JOptionPane.showMessageDialog(this, "Re registro");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
