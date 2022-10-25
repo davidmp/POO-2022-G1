@@ -6,12 +6,15 @@ package pe.edu.upeu.app.gui;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import pe.com.syscenterlife.formvalid.Validator;
+import pe.com.syscenterlife.formvalid.ValidatorItem;
 import pe.edu.upeu.app.dao.ClienteDAO;
 import pe.edu.upeu.app.dao.ClienteDaoI;
 import pe.edu.upeu.app.modelo.ClienteTO;
@@ -112,7 +115,9 @@ public class MainCliente extends javax.swing.JPanel {
         txtNombre = new javax.swing.JTextField();
         cbxTipo = new javax.swing.JComboBox<>();
         fondoPanel1 = new pe.edu.upeu.app.component.FondoPanel();
-        jButton1 = new javax.swing.JButton();
+        txtDato1 = new javax.swing.JTextField();
+        txtDato2 = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser("dd/MM/yyyy","##/##/####",'_');
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -187,26 +192,19 @@ public class MainCliente extends javax.swing.JPanel {
         jLabel5.setText("Tipo:");
 
         cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        cbxTipo.setSelectedIndex(-1);
 
         fondoPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jButton1.setText("jButton1");
 
         javax.swing.GroupLayout fondoPanel1Layout = new javax.swing.GroupLayout(fondoPanel1);
         fondoPanel1.setLayout(fondoPanel1Layout);
         fondoPanel1Layout.setHorizontalGroup(
             fondoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fondoPanel1Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(jButton1)
-                .addContainerGap(89, Short.MAX_VALUE))
+            .addGap(0, 246, Short.MAX_VALUE)
         );
         fondoPanel1Layout.setVerticalGroup(
             fondoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fondoPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jButton1)
-                .addContainerGap(45, Short.MAX_VALUE))
+            .addGap(0, 166, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -235,7 +233,11 @@ public class MainCliente extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDato1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtDato2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)))))
                 .addContainerGap(33, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -262,9 +264,18 @@ public class MainCliente extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(fondoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtDato1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDato2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(fondoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 204));
@@ -391,11 +402,19 @@ public class MainCliente extends javax.swing.JPanel {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
+
+        List<ValidatorItem> vals = new ArrayList<>();
+        vals.add(new ValidatorItem("required|number|min:8|max:8", txtDni, "DNI"));
+        vals.add(new ValidatorItem("required", txtNombre, "Nombre"));
+        vals.add(new ValidatorItem("required", cbxTipo, "Tipo"));
+        vals.add(new ValidatorItem("required|email", txtDato1, "Correo"));
+        vals.add(new ValidatorItem("required|date", txtDato2, "Fecha"));
+
         cDao = new ClienteDAO();
         ClienteTO to = new ClienteTO();
         to.setDniruc(txtDni.getText());
         to.setNombresrs(txtNombre.getText());
-        to.setTipo(cbxTipo.getSelectedItem().toString());
+        to.setTipo(cbxTipo.getSelectedItem()==null?"":cbxTipo.getSelectedItem().toString());
         int fila = jTable1.getSelectedRow();
         if (fila != -1) {
             try {
@@ -413,12 +432,16 @@ public class MainCliente extends javax.swing.JPanel {
             }
         } else {
             try {
-                if (cDao.create(to) != 0) {
-                    modelo = (DefaultTableModel) jTable1.getModel();
-                    Object nuevo[] = {modelo.getRowCount() + 1, to.getDniruc(), to.getNombresrs(), to.getTipo()};
-                    modelo.addRow(nuevo);
-                    resetForm();
-                    JOptionPane.showMessageDialog(this, "Re registro");
+                Validator validator = new Validator(vals); 
+                if(validator.isPasses()){
+                    if (cDao.create(to) != 0) {
+                        modelo = (DefaultTableModel) jTable1.getModel();
+                        Object nuevo[] = {modelo.getRowCount() + 1, to.getDniruc(), to.getNombresrs(), to.getTipo()};
+                        modelo.addRow(nuevo);
+                        resetForm();
+                        JOptionPane.showMessageDialog(this, "Re registro");
+                        //toasMsq1.success("");
+                    }
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
@@ -451,7 +474,7 @@ public class MainCliente extends javax.swing.JPanel {
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JComboBox<String> cbxTipo;
     private pe.edu.upeu.app.component.FondoPanel fondoPanel1;
-    private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -463,6 +486,8 @@ public class MainCliente extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtDato1;
+    private javax.swing.JTextField txtDato2;
     private javax.swing.JTextField txtDatofiltro;
     private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtNombre;

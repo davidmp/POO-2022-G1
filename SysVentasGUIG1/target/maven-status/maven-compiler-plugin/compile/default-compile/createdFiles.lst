@@ -19,3 +19,4 @@ pe\edu\upeu\app\SysVentasGUIG1.class
 pe\edu\upeu\app\component\FondoPanel.class
 pe\edu\upeu\app\gui\TIPOCLXIENTE.class
 pe\edu\upeu\app\util\ErrorLogger.class
+pe\edu\upeu\app\component\PanelBorder.class
