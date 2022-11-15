@@ -1,4 +1,5 @@
 pe\edu\upeu\app\gui\MainCliente$2.class
+pe\edu\upeu\app\dao\conx\ConnS.class
 pe\edu\upeu\app\modelo\ClienteTO.class
 pe\edu\upeu\app\util\MsgBox.class
 pe\edu\upeu\app\gui\Login$1.class

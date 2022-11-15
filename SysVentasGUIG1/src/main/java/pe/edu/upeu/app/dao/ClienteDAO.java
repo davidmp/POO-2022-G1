@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import pe.edu.upeu.app.dao.conx.Conn;
+import pe.edu.upeu.app.dao.conx.ConnS;
 import pe.edu.upeu.app.modelo.ClienteTO;
 import pe.edu.upeu.app.util.ErrorLogger;
 
@@ -26,7 +27,7 @@ public class ClienteDAO implements ClienteDaoI {
     Statement stmt = null;
     Vector columnNames;
     Vector visitdata;
-    Connection connection = Conn.connectSQLite();
+    Connection connection = ConnS.getInstance().getConnection();
     static PreparedStatement ps;
     static ErrorLogger log = new ErrorLogger(ClienteDAO.class.getName());
     ResultSet rs = null;
@@ -112,7 +113,7 @@ public class ClienteDAO implements ClienteDaoI {
         List<ClienteTO> listarclientes = new ArrayList();
         String sql = "SELECT * FROM cliente";
         try {
-            connection = new Conn().connectSQLite();
+            //connection = new Conn().connectSQLite();
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -133,7 +134,7 @@ public class ClienteDAO implements ClienteDaoI {
         ClienteTO cliente = new ClienteTO();
         String sql = "SELECT * FROM cliente WHERE dniruc = ?";
         try {
-            connection = new Conn().connectSQLite();
+            //connection = new Conn().connectSQLite();
             ps = connection.prepareStatement(sql);
             ps.setString(1, dni);
             rs = ps.executeQuery();
