@@ -5,6 +5,7 @@
 package pe.edu.upeu.app.dao;
 
 import java.util.List;
+import pe.com.syscenterlife.autocomp.ModeloDataAutocomplet;
 import pe.edu.upeu.app.modelo.ClienteTO;
 
 /**
@@ -26,5 +27,8 @@ public interface ClienteDaoI {
     public ClienteTO buscarClientes(String dni);
 
     public void reportarCliente();
+    
+    public List<ModeloDataAutocomplet> listAutoComplet(String filter);
+
 
 }

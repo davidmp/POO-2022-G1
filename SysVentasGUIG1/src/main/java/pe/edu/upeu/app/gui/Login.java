@@ -59,8 +59,6 @@ public class Login extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         msg = new javax.swing.JLabel();
         panelBorder1 = new pe.edu.upeu.app.component.PanelBorder();
-        txtUsuario = new javax.swing.JTextField();
-        txtClave = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -71,15 +69,7 @@ public class Login extends javax.swing.JFrame {
 
         msg.setText("MSG");
 
-        panelBorder1.setBackground(new java.awt.Color(102, 255, 255));
-
-        txtUsuario.setText("davidmp");
-        panelBorder1.add(txtUsuario);
-        txtUsuario.setBounds(10, 10, 120, 22);
-
-        txtClave.setText("123456");
-        panelBorder1.add(txtClave);
-        txtClave.setBounds(10, 40, 120, 22);
+        panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
         jButton1.setText("Ingresar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -88,28 +78,27 @@ public class Login extends javax.swing.JFrame {
             }
         });
         panelBorder1.add(jButton1);
-        jButton1.setBounds(10, 70, 120, 22);
+        jButton1.setBounds(60, 100, 72, 22);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(msg))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addComponent(msg)
+                .addContainerGap(152, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
+                .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(msg)
                 .addGap(75, 75, 75))
         );
@@ -120,9 +109,9 @@ public class Login extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(138, 138, 138)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -146,13 +135,12 @@ public class Login extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -160,15 +148,7 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (txtUsuario.getText().equals("davidmp") && String.valueOf(txtClave.getPassword()).equals("123456")) {
-            System.out.println("Entro Aqui!!");
-            GUIMain guiMain = new GUIMain();
-            guiMain.setVisible(true);
-            this.dispose();
-        } else {
-            msg.setText("Error de usuario...intente otra vez");
-        }
-
+        new GUIMain().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -182,7 +162,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel msg;
     private pe.edu.upeu.app.component.PanelBorder panelBorder1;
-    private javax.swing.JPasswordField txtClave;
-    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

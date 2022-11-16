@@ -30,14 +30,22 @@
         <dependency>
             <groupId>com.github.davidmp</groupId>
             <artifactId>SysSwingDmp</artifactId>
-            <version>v1.4</version>
-        </dependency>        
-        <!-- https://mvnrepository.com/artifact/com.toedter/jcalendar -->
+            <version>v1.8</version>
+        </dependency>   
+        
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
-            <groupId>com.toedter</groupId>
-            <artifactId>jcalendar</artifactId>
-            <version>1.4</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.30</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10</version>
+        </dependency>
+             
               
     </dependencies>
     

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
+import pe.com.syscenterlife.autocomp.ModeloDataAutocomplet;
 import pe.edu.upeu.app.dao.conx.Conn;
 import pe.edu.upeu.app.dao.conx.ConnS;
 import pe.edu.upeu.app.modelo.ClienteTO;
@@ -148,7 +149,28 @@ public class ClienteDAO implements ClienteDaoI {
         }
         return cliente;
     }
-    
+
+    @Override
+    public List<ModeloDataAutocomplet> listAutoComplet(String filter) {
+        List<ModeloDataAutocomplet> listarclientes = new ArrayList();
+        String sql = "SELECT * FROM cliente WHERE nombrers like ?";
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, filter + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                ModeloDataAutocomplet data = new ModeloDataAutocomplet();
+                ModeloDataAutocomplet.TIPE_DISPLAY = "ID";
+                data.setIdx(rs.getString("dniruc"));
+                data.setNombreDysplay(rs.getString("nombrers"));
+                data.setOtherData(rs.getString("tipo"));
+                listarclientes.add(data);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return listarclientes;
+    }
 
     @Override
     public void reportarCliente() {
