@@ -8,10 +8,7 @@ import java.util.List;
 import pe.com.syscenterlife.autocomp.ModeloDataAutocomplet;
 import pe.edu.upeu.app.modelo.ClienteTO;
 
-/**
- *
- * @author LABORATORIO_2
- */
+
 public interface ClienteDaoI {
 
     public int create(ClienteTO d);
