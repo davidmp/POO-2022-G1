@@ -11,16 +11,17 @@ import pe.com.syscenterlife.autocomp.AutoCompleteTextField;
 import pe.com.syscenterlife.autocomp.ModeloDataAutocomplet;
 import pe.edu.upeu.app.dao.ClienteDAO;
 import pe.edu.upeu.app.dao.ClienteDaoI;
+import pe.edu.upeu.app.dao.ProductoDAO;
+import pe.edu.upeu.app.dao.ProductoDaoI;
 
 /**
  *
  * @author LABORATORIO_2
  */
 public class MainVentas extends javax.swing.JPanel {
-
-    /**
-     * Creates new form MainVentas
-     */
+    
+    ProductoDaoI daoP;
+    
     public MainVentas() {
         initComponents();
         ClienteDaoI daoC = new ClienteDAO();
@@ -50,6 +51,29 @@ public class MainVentas extends javax.swing.JPanel {
                 }
             }
         });
+        
+       daoP=new ProductoDAO();
+       List<ModeloDataAutocomplet> itemsP=daoP.listAutoComplet("");
+       AutoCompleteTextField.setupAutoComplete(txtProducto, itemsP, "ID");
+       txtProducto.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                txtCodigo.setText(AutoCompleteTextField.dataGetReturnet.getNombreDysplay());
+                String[] dataX=AutoCompleteTextField.dataGetReturnet.getOtherData().split(":");
+                txtStock.setText(dataX[0]);
+                txtPUnitario.setText(dataX[1]);
+            }
+            
+           
+       });
+       txtCantidad.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                double cant=Double.parseDouble(String.valueOf(txtCantidad.getText()));
+                double pu=Double.parseDouble(String.valueOf(txtPUnitario.getText()));
+                txtPTotal.setText(String.valueOf(cant*pu));
+            }       
+       });
 
     }
 
