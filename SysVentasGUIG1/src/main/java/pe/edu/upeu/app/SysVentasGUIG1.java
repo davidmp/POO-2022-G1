@@ -5,9 +5,8 @@
 
 package pe.edu.upeu.app;
 
-import javax.swing.JOptionPane;
 import pe.edu.upeu.app.gui.Login;
-import pe.edu.upeu.app.util.MsgBox;
+
 
 /**
  *
@@ -17,7 +16,7 @@ public class SysVentasGUIG1 {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        //new MsgBox("Mensaje de alerta", JOptionPane.WARNING_MESSAGE, "secrecy-icon.png");
+        
         new Login().setVisible(true);
     }
 }

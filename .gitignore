@@ -3,3 +3,4 @@
 
 # Ada Library Information
 *.ali
+/SysVentasGUIG1/target/

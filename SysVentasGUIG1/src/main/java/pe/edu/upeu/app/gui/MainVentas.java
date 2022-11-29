@@ -4,15 +4,26 @@
  */
 package pe.edu.upeu.app.gui;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import pe.com.syscenterlife.autocomp.AutoCompleteTextField;
 import pe.com.syscenterlife.autocomp.ModeloDataAutocomplet;
+import pe.com.syscenterlife.jtablecomp.ButtonsEditor;
+import pe.com.syscenterlife.jtablecomp.ButtonsPanel;
+import pe.com.syscenterlife.jtablecomp.ButtonsRenderer;
+import pe.edu.upeu.app.dao.CarritoDao;
+import pe.edu.upeu.app.dao.CarritoDaoI;
 import pe.edu.upeu.app.dao.ClienteDAO;
 import pe.edu.upeu.app.dao.ClienteDaoI;
 import pe.edu.upeu.app.dao.ProductoDAO;
 import pe.edu.upeu.app.dao.ProductoDaoI;
+import pe.edu.upeu.app.modelo.CarritoTO;
 
 /**
  *
@@ -21,6 +32,8 @@ import pe.edu.upeu.app.dao.ProductoDaoI;
 public class MainVentas extends javax.swing.JPanel {
     
     ProductoDaoI daoP;
+    CarritoDaoI daoC;
+    DefaultTableModel modelo;
     
     public MainVentas() {
         initComponents();
@@ -52,20 +65,19 @@ public class MainVentas extends javax.swing.JPanel {
             }
         });
         
-       daoP=new ProductoDAO();
-       List<ModeloDataAutocomplet> itemsP=daoP.listAutoComplet("");
-       AutoCompleteTextField.setupAutoComplete(txtProducto, itemsP, "ID");
+        buscarProducto();       
        txtProducto.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if(AutoCompleteTextField.dataGetReturnet!=null){
                 txtCodigo.setText(AutoCompleteTextField.dataGetReturnet.getNombreDysplay());
                 String[] dataX=AutoCompleteTextField.dataGetReturnet.getOtherData().split(":");
                 txtStock.setText(dataX[0]);
                 txtPUnitario.setText(dataX[1]);
-            }
-            
-           
+                }
+            }                       
        });
+       
        txtCantidad.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -75,6 +87,63 @@ public class MainVentas extends javax.swing.JPanel {
             }       
        });
 
+    }
+    
+public List<CarritoTO> listarCarrito(String dni) {
+        daoC = new CarritoDao();
+        List<CarritoTO> listarCleintes = daoC.lista(dni);
+        jTable1.setAutoCreateRowSorter(true);
+        modelo = (DefaultTableModel) jTable1.getModel();
+        ButtonsPanel.metaDataButtons = new String[][]{{"", "del-icon.png"}};
+        jTable1.setRowHeight(40);
+        TableColumn column = jTable1.getColumnModel().getColumn(8);
+        column.setCellRenderer(new ButtonsRenderer());
+        ButtonsEditor be = new ButtonsEditor(jTable1);
+        column.setCellEditor(be);
+        modelo.setNumRows(0);
+        Object[] ob = new Object[9];
+        double impoTotal = 0, igv = 0;
+        for (int i = 0; i < listarCleintes.size(); i++) {
+            int x = -1;
+            ob[++x] = listarCleintes.get(i).getIdCarrito();
+            ob[++x] = listarCleintes.get(i).getDniruc();
+            ob[++x] = listarCleintes.get(i).getIdProducto();
+            ob[++x] = listarCleintes.get(i).getNombreProducto();
+            ob[++x] = listarCleintes.get(i).getCantidad();
+            ob[++x] = listarCleintes.get(i).getPunitario();
+            ob[++x] = listarCleintes.get(i).getPtotal();
+            ob[++x] = listarCleintes.get(i).getEstado();
+            ob[++x] = "";
+            impoTotal += Double.parseDouble(String.valueOf(listarCleintes.get(i).getPtotal()));
+            modelo.addRow(ob);
+        }
+        JButton btnDel = be.getCellEditorValue().buttons.get(0);
+        btnDel.addActionListener((ActionEvent e) -> {
+            System.out.println("VERRRRRR:");
+            int row
+                    = jTable1.convertRowIndexToModel(jTable1.getEditingRow());
+            Object o = jTable1.getModel().getValueAt(row, 0);
+            daoC = new CarritoDao();
+            try {
+                daoC.delete(Integer.parseInt(String.valueOf(o)));
+                listarCarrito(dni);
+            } catch (Exception ex) {
+                System.err.println("Error:" + ex.getMessage());
+            }
+            System.out.println("AAAA:" + String.valueOf(o));
+            JOptionPane.showMessageDialog(this, "Editing: " + o);
+        });
+        jTable1.setModel(modelo);
+        txtImporte.setText(String.valueOf(impoTotal));
+        double pv = impoTotal / 1.18;
+        txtPventa.setText(String.valueOf(Math.round(pv * 100.0) / 100.0));
+        txtIgv.setText(String.valueOf(Math.round((pv * 0.18) * 100.0) / 100.0));
+        return  listarCleintes;
+    }    
+    public void buscarProducto(){
+       daoP=new ProductoDAO();
+       List<ModeloDataAutocomplet> itemsP=daoP.listAutoComplet("");
+       AutoCompleteTextField.setupAutoComplete(txtProducto, itemsP, "ID");    
     }
 
     /**
@@ -191,6 +260,11 @@ public class MainVentas extends javax.swing.JPanel {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/data-add-icon.png"))); // NOI18N
         jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -256,13 +330,10 @@ public class MainVentas extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "DNI/RUC", "Id Producto", "Producto", "Cantidad", "P.Unitario S/.", "P. Total S/.", "Estado", "Opc"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -370,6 +441,22 @@ public class MainVentas extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        daoC=new CarritoDao();
+        CarritoTO to=new CarritoTO();
+        to.setDniruc(txtDniAutoComplete.getText());
+        to.setIdProducto(Integer.parseInt(txtCodigo.getText()));
+        to.setNombreProducto(txtProducto.getText());
+        to.setCantidad(Double.parseDouble(txtCantidad.getText()));
+        to.setPunitario(Double.parseDouble(txtPUnitario.getText()));
+        to.setPtotal(Double.parseDouble(txtPTotal.getText()));
+        to.setEstado(1);        
+        daoC.crear(to);  
+        listarCarrito(txtDniAutoComplete.getText());
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
