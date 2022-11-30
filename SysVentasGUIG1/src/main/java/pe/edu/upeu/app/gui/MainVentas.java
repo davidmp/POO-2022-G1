@@ -23,7 +23,11 @@ import pe.edu.upeu.app.dao.ClienteDAO;
 import pe.edu.upeu.app.dao.ClienteDaoI;
 import pe.edu.upeu.app.dao.ProductoDAO;
 import pe.edu.upeu.app.dao.ProductoDaoI;
+import pe.edu.upeu.app.dao.VentaDao;
+import pe.edu.upeu.app.dao.VentaDaoI;
 import pe.edu.upeu.app.modelo.CarritoTO;
+import pe.edu.upeu.app.modelo.VentaDetalleTO;
+import pe.edu.upeu.app.modelo.VentaTO;
 
 /**
  *
@@ -34,6 +38,7 @@ public class MainVentas extends javax.swing.JPanel {
     ProductoDaoI daoP;
     CarritoDaoI daoC;
     DefaultTableModel modelo;
+    VentaDaoI daoV;
     
     public MainVentas() {
         initComponents();
@@ -60,7 +65,8 @@ public class MainVentas extends javax.swing.JPanel {
                     } else {
                         System.out.println("Valor:" + txtDniAutoComplete.getText());
                         txtNombre.setText("");
-                    }
+                    } 
+                    listarCarrito(txtDniAutoComplete.getText());  
                 }
             }
         });
@@ -367,6 +373,11 @@ public List<CarritoTO> listarCarrito(String dni) {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop-cart-add-icon.png"))); // NOI18N
         jButton3.setText("R. Venta");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -458,7 +469,44 @@ public List<CarritoTO> listarCarrito(String dni) {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        registrarVenta();
+        daoC=new CarritoDao();
+        daoC.deleteCarAll(txtDniAutoComplete.getText());
+        listarCarrito(txtDniAutoComplete.getText());
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
+    public void registrarVenta(){
+        daoV=new VentaDao();
+        VentaTO to=new VentaTO();
+        to.setDniruc(txtDniAutoComplete.getText());
+        to.setPreciobase(Double.parseDouble(txtPventa.getText()));
+        to.setIgv(Double.parseDouble(txtIgv.getText()));
+        to.setPreciototal(Double.parseDouble(txtImporte.getText()));
+        int idX=daoV.createVenta(to);
+        
+        List<CarritoTO> dd=listarCarrito(txtDniAutoComplete.getText());
+        if(idX!=0){
+            for (CarritoTO car : dd) {
+                VentaDetalleTO vd=new VentaDetalleTO();
+                vd.setIdVenta(idX);
+                vd.setIdProducto(car.getIdProducto());
+                vd.setCantidad(car.getCantidad());
+                vd.setDescuento(0);
+                vd.setPu(car.getPunitario());
+                vd.setSubtotal(car.getPtotal());
+                
+                daoV=new VentaDao();
+                daoV.createVentaDetalle(vd);                
+            }
+            
+        }
+        
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
