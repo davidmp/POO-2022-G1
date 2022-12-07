@@ -101,6 +101,9 @@ public class GUIMain extends JFrame {
                 scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
                 jtpane.add("G. Ventas",scrollPane);
                                 
+                ReporteVentas rv=new ReporteVentas();
+                jtpane.add("R.Venta", rv);
+                
                 contai.add(BorderLayout.CENTER, jtpane);
                 contai.invalidate();
                 contai.validate();
