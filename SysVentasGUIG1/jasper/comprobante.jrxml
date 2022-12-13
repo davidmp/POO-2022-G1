@@ -6,6 +6,7 @@
 	<parameter name="idventa" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imagenurl" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from venta where id_venta=$P{idventa}]]>
 	</queryString>
@@ -21,7 +22,7 @@
 		<band height="79" splitType="Stretch">
 			<image>
 				<reportElement x="13" y="14" width="169" height="42" uuid="13d3bc7e-0d2a-4d18-9466-1dd3c5923586"/>
-				<imageExpression><![CDATA["D:\\POO\\DESARROLLO\\POO-2022-G1\\SysVentasGUIG1\\jasper\\logoupeu.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imagenurl}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="234" y="24" width="191" height="20" uuid="0643943b-ba16-4427-b7f1-e1fa939825a6"/>

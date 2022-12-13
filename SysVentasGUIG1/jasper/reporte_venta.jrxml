@@ -44,6 +44,7 @@
 			<groupExpression><![CDATA[$F{preciototal}]]></groupExpression>
 		</group>
 	</subDataset>
+	<parameter name="imagenurl" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from venta]]>
 	</queryString>
@@ -59,7 +60,7 @@
 		<band height="79" splitType="Stretch">
 			<image>
 				<reportElement x="12" y="11" width="177" height="50" uuid="e7789d79-f539-4bfc-9a3a-e9f01c4df7c1"/>
-				<imageExpression><![CDATA["D:\\POO\\DESARROLLO\\POO-2022-G1\\SysVentasGUIG1\\jasper\\logoupeu.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imagenurl}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="266" y="28" width="100" height="20" uuid="db7094c9-49ae-421f-bf3b-40ea9f42fea9"/>

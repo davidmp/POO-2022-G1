@@ -495,7 +495,9 @@ public class MainVentas extends javax.swing.JPanel {
         try {
             ConnS instance = ConnS.getInstance();
             HashMap param = new HashMap();
+             String imgen = getFile("logoupeu.png").getAbsolutePath(); 
             param.put("idventa", idv);
+            param.put("imagenurl", imgen);
             JasperDesign jdesign = JRXmlLoader.load(getFile("comprobante.jrxml"));
             JasperReport jreport = JasperCompileManager.compileReport(jdesign);
             JasperPrint jprint = JasperFillManager.fillReport(jreport, param,

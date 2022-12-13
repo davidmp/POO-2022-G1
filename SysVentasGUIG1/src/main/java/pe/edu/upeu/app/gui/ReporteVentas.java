@@ -38,8 +38,10 @@ public class ReporteVentas extends javax.swing.JPanel {
             jPanel2.removeAll();
             jPanel2.repaint();
             jPanel2.revalidate();
+            String imgen = getFile("logoupeu.png").getAbsolutePath();
             ConnS instance = ConnS.getInstance();
             HashMap param = new HashMap();
+            param.put("imagenurl", imgen);
             JasperDesign jdesign = JRXmlLoader.load(getFile("reporte_venta.jrxml"));
             JasperReport jreport = JasperCompileManager.compileReport(jdesign);
             JasperPrint jprint = JasperFillManager.fillReport(jreport, param, instance.getConnection());
