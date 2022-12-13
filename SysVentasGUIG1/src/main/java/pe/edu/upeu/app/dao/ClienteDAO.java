@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import pe.com.syscenterlife.autocomp.ModeloDataAutocomplet;
 import pe.edu.upeu.app.dao.conx.Conn;
 import pe.edu.upeu.app.dao.conx.ConnS;
@@ -28,7 +30,8 @@ public class ClienteDAO implements ClienteDaoI {
     Statement stmt = null;
     Vector columnNames;
     Vector visitdata;
-    Connection connection = ConnS.getInstance().getConnection();
+    ConnS instance=ConnS.getInstance();
+    Connection connection=instance.getConnection();
     static PreparedStatement ps;
     static ErrorLogger log = new ErrorLogger(ClienteDAO.class.getName());
     ResultSet rs = null;
@@ -36,6 +39,7 @@ public class ClienteDAO implements ClienteDaoI {
     public ClienteDAO() {
         columnNames = new Vector();
         visitdata = new Vector();
+        //JOptionPane.showMessageDialog(new JFrame(), "Holas");
     }
 
     @Override
